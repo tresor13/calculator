@@ -4,7 +4,7 @@ import { numEntities, operatorEntities, specSymbolEntities } from "../configs";
 import { RenderButtonFunction, OnClickBtnFunction } from "./types";
 import { useAppDispatch } from "../store/store";
 import { useActions, useTypedSelector } from "../store/hooks";
-import { HistoryItem } from "@/store/types";
+import { StateItem } from "@/store/types";
 import { asyncActions } from "@/store/slices/CalculatorHistorySlice";
 
 const Calculator: React.FunctionComponent = () => {
@@ -19,7 +19,7 @@ const Calculator: React.FunctionComponent = () => {
 
     if (item.innerHtml === "=") {
       dispatch(calculateExpression(inputValue)).then((data) => {
-        const payload = data.payload as any as HistoryItem;
+        const payload = data.payload as any as StateItem;
         addItemToState(payload);
         const { result } = payload;
         setItemToInput(result);

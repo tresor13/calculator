@@ -1,4 +1,4 @@
-export interface HistoryItem {
+export interface StateItem {
   expression: string;
   result: string;
   _id: string;
@@ -6,7 +6,7 @@ export interface HistoryItem {
 }
 
 interface CalculatorHistoryState {
-  history: Array<HistoryItem>;
+  history: Array<StateItem>;
   inputValue: string;
   fetchError: string | null;
   status: "loading" | "idle";
@@ -20,7 +20,7 @@ enum HistoryActionTypes {
 
 interface AddAction {
   type: HistoryActionTypes.ADD;
-  payload: HistoryItem;
+  payload: StateItem;
 }
 
 interface DeleteAction {

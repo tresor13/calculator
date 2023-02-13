@@ -1,16 +1,5 @@
 import { defaultApi } from "@/api";
-import {
-  CalculationRequest,
-  DeleteRequest,
-  GetAllRequest,
-  HistoryItem,
-} from "@/api/types";
-
-export type ApiMethods = {
-  calculateExpression: CalculationRequest<HistoryItem>;
-  deleteHistoryItem: DeleteRequest;
-  fetchHistory: GetAllRequest<HistoryItem>;
-};
+import { ApiMethods } from "@/api/types";
 
 type UseApiHook = () => ApiMethods;
 

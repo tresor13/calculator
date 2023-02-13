@@ -1,8 +1,19 @@
-export type HistoryItem = {
+export type DefaultApiRequest = {
   expression: string;
   result: string;
 };
 
-export type CalculationRequest<T> = (expression: string) => T[];
+interface ApiAdded {
+  _id: string;
+  __v?: string;
+}
+
+export type CalculationRequest<T> = (expression: string) => (T & ApiAdded)[];
 export type DeleteRequest = (id: string) => void;
-export type GetAllRequest<T> = () => T[];
+export type GetAllRequest<T> = () => (T & ApiAdded)[];
+
+export type ApiMethods = {
+  calculateExpression: CalculationRequest<DefaultApiRequest>;
+  deleteHistoryItem: DeleteRequest;
+  fetchHistory: GetAllRequest<DefaultApiRequest>;
+};

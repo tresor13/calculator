@@ -69,7 +69,7 @@ const calculatorHistorySlice = createSlice({
     });
 
     builder.addCase(deleteHistoryItem.fulfilled, (state, action) => {
-      state.history.filter((item) => item._id != action.payload);
+      state.history.filter((item) => item._id != action.meta.arg);
     });
 
     builder.addCase(deleteHistoryItem.rejected, (state, action) => {
