@@ -1,14 +1,18 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { ExpressionDto } from './dto/expression.dto';
+import { CacheService } from '../cache';
+import { CACHE_SERVICE } from '../cache';
+import { HistoryService } from '../history/history.service';
+import { HISTORY_SERVICE } from '../history';
 import { CalculationResultDto } from './dto/calculation-result.dto';
-import { CacheService } from 'src/cache/cache.service';
-import { HistoryService } from 'src/history/history.service';
 
 @Controller('/calculator')
 export class CalculatorController {
   constructor(
+    @Inject(HISTORY_SERVICE)
     private historyService: HistoryService,
-    private cacheService: CacheService,
+    @Inject(CACHE_SERVICE)
+    private readonly cacheService: CacheService,
   ) {}
   @Get()
   getResult(

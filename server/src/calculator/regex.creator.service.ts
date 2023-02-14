@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { operatorEntities as entities } from './configs';
-import { parentheses } from 'src/calculator/configs';
+import { parentheses } from '../calculator/configs';
 import { UNARY_OPERATOR_TYPE, BINARY_OPERATOR_TYPE } from './configs';
+import { RegExCreatorServiceInterface } from './interfaces/calculator.services.interfaces';
 
 @Injectable()
-export class RegExCreatorService {
+export class RegExCreatorService implements RegExCreatorServiceInterface {
   createExpressionRegExps() {
     const { opened, closed } = parentheses;
     let openBrackets = '';

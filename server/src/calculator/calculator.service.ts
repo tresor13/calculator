@@ -1,12 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { CalculatorServiceInterface } from './interfaces/calculator.services.interfaces';
+import {
+  EXPRESSION_COUNTER_SERVICE,
+  REGEXP_CREATOR_SERVICE_INTERFACE,
+} from './interfaces/constants';
 
 import { ExpressionCounterService } from './expression.counter.service';
 import { RegExCreatorService } from './regex.creator.service';
 
 @Injectable()
-export class CalculatorService {
+export class CalculatorService implements CalculatorServiceInterface {
   constructor(
+    @Inject(EXPRESSION_COUNTER_SERVICE)
     private readonly expressionCounterService: ExpressionCounterService,
+    @Inject(REGEXP_CREATOR_SERVICE_INTERFACE)
     private readonly regExCreatorService: RegExCreatorService,
   ) {}
 
@@ -50,7 +57,7 @@ export class CalculatorService {
       return this.getResult(iter);
     }
     const operatorsRegExp = this.regExCreatorService.makeOperatorsRegEx();
-    const result = operatorsRegExp.reduce((acc, operator) => {
+    const result: string = operatorsRegExp.reduce((acc, operator) => {
       return this.expressionCounterService.countExpression(acc, operator);
     }, expressionString);
 
@@ -60,7 +67,7 @@ export class CalculatorService {
     return result;
   }
 
-  exponentialToDecimal(exponential: string) {
+  exponentialToDecimal(exponential: string): string {
     let decimal = exponential.toLowerCase();
     if (decimal.includes('e+')) {
       const exponentialSplitted = decimal.split('e+');

@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { OperatorRegExp } from 'src/calculator/configs/types';
+import { OperatorRegExp } from '../calculator/configs/types';
 import {
   UNARY_OPERATOR_TYPE,
   BINARY_OPERATOR_TYPE,
-} from 'src/calculator/configs';
+} from '../calculator/configs';
 import { operatorEntities as operators } from './configs';
+import { ExpressionCounterServiceInterface } from './interfaces/calculator.services.interfaces';
 
 @Injectable()
-export class ExpressionCounterService {
-  countExpression(inputString: string, operator: OperatorRegExp) {
+export class ExpressionCounterService
+  implements ExpressionCounterServiceInterface
+{
+  countExpression(inputString: string, operator: OperatorRegExp): string {
     const operatorRegEx = operator.regExp;
     const operatorType = operator.type;
     const operandRegEx = '\\d+(?:\\.\\d+)?';
@@ -44,7 +47,7 @@ export class ExpressionCounterService {
     return this.countExpression(replaced, operator);
   }
 
-  parseExprForMathEntities(expr: string, regexp: RegExp) {
+  parseExprForMathEntities(expr: string, regexp: RegExp): string[] {
     const result = expr.match(regexp);
 
     if (!result) return [];
