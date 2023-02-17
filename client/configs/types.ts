@@ -7,13 +7,6 @@ export interface NumObject {
 
 export type NumberEntities = Record<number, NumObject>;
 
-// type UnaryOperatorCount = (operand1: number) => number | null;
-
-// type BinaryOperatorCount = (
-//   operand1: number,
-//   operand2: number
-// ) => number | null;
-
 export interface OperatorObject {
   textForInput: string;
   onClick: (button: string, expression: string) => string;

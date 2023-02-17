@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useTypedSelector } from "../store/hooks";
 import { useAppDispatch } from "../store/store";
 import { ListItem } from "./ListItem";
-import { HistoryItem } from "../store/types";
+import { StateItem } from "../store/types";
 import { asyncActions } from "@/store/slices/CalculatorHistorySlice";
 
 const History: React.FunctionComponent = () => {
@@ -19,8 +19,7 @@ const History: React.FunctionComponent = () => {
   return (
     <div className="history-container">
       <ul className="list-group">
-        {[...history].map((item: HistoryItem) => {
-          console.log(item);
+        {[...history].map((item: StateItem) => {
           return <ListItem key={item._id} {...item} />;
         })}
       </ul>

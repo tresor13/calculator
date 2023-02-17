@@ -1,10 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { CalculatorHistoryState } from "../types";
 import { HYDRATE } from "next-redux-wrapper";
-
-import { useApi } from "../hooks";
-
-const api = useApi();
+import { api } from "@/api";
 
 const fetchHistory = createAsyncThunk("history/get", api.fetchHistory);
 const deleteHistoryItem = createAsyncThunk(

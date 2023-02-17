@@ -1,9 +1,9 @@
 import { useActions, useApi } from "../store/hooks";
-import { HistoryItem } from "../store/types";
+import { StateItem } from "../store/types";
 import { useAppDispatch } from "../store/store";
 import { asyncActions } from "@/store/slices/CalculatorHistorySlice";
 
-export const ListItem: React.FunctionComponent<HistoryItem> = (props) => {
+export const ListItem: React.FunctionComponent<StateItem> = (props) => {
   const { removeFromState, setItemToInput } = useActions();
   const dispatch = useAppDispatch();
   const { deleteHistoryItem } = asyncActions;

@@ -1,57 +1,77 @@
 import { Test } from '@nestjs/testing';
-import { HistoryModule, HISTORY_SERVICE } from '../../history';
+import { HISTORY_SERVICE } from '../../history';
 import { CacheService, CACHE_SERVICE } from '../../cache';
-import { HistoryService } from '../../history/history.service';
+import { DefaultHistoryService } from '../../history/services/history.service';
 import { CalculatorController } from '../calculator.controller';
-import { CalculatorService } from '../calculator.service';
-import { calculatorStub } from './stubs/calculator.stub';
-import { RegExCreatorService } from '../regex.creator.service';
-import { ExpressionCounterService } from '../expression.counter.service';
-import {
-  CALCULATOR_SERVICE,
-  EXPRESSION_COUNTER_SERVICE,
-  REGEXP_CREATOR_SERVICE_INTERFACE,
-} from '../interfaces/constants';
+import { CalculatorService } from '../services/calculator.service';
 
-jest.mock('../calculator.service.ts');
+import { CALCULATOR_SERVICE } from '../constants';
 
-let calculatorController: CalculatorController;
-let calculatorService: CalculatorService;
+describe('CaclulatorController', () => {
+  let controller: CalculatorController;
+  let service: Pick<jest.MockedObject<CalculatorService>, 'getResult'>;
+  let cache: Pick<
+    jest.MockedObject<CacheService>,
+    'checkInCache' | 'setToCache'
+  >;
+  let history: Pick<jest.MockedObject<DefaultHistoryService>, 'create'>;
 
-beforeEach(async () => {
-  const moduleRef = await Test.createTestingModule({
-    imports: [HistoryModule],
-    controllers: [CalculatorController],
+  beforeAll(async () => {
+    const modRef = await Test.createTestingModule({
+      controllers: [CalculatorController],
+      providers: [
+        {
+          provide: CALCULATOR_SERVICE,
+          useValue: {
+            getResult: jest.fn(),
+          },
+        },
+        {
+          provide: CACHE_SERVICE,
+          useValue: {
+            checkInCache: jest.fn(),
+            setToCache: jest.fn(),
+          },
+        },
+        {
+          provide: HISTORY_SERVICE,
+          useValue: {
+            create: jest.fn(),
+          },
+        },
+      ],
+    }).compile();
 
-    providers: [
-      { useClass: CalculatorService, provide: CALCULATOR_SERVICE },
-      {
-        useClass: ExpressionCounterService,
-        provide: EXPRESSION_COUNTER_SERVICE,
-      },
-      {
-        useClass: RegExCreatorService,
-        provide: REGEXP_CREATOR_SERVICE_INTERFACE,
-      },
-      { useClass: CacheService, provide: CACHE_SERVICE },
-      { useClass: HistoryService, provide: HISTORY_SERVICE },
-    ],
-  }).compile();
-  calculatorController =
-    moduleRef.get<CalculatorController>(CalculatorController);
-  calculatorService = moduleRef.get<CalculatorService>(CalculatorService);
-  jest.clearAllMocks();
-});
+    controller = modRef.get(CalculatorController);
+    service = modRef.get(CALCULATOR_SERVICE);
+    cache = modRef.get(CACHE_SERVICE);
+    history = modRef.get(HISTORY_SERVICE);
+  });
 
-describe('getResult', () => {
-  describe('when getResult is called', () => {
-    beforeEach(async () => {
-      await calculatorController.getResult(calculatorStub().request);
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  describe('getResult', () => {
+    const dbResponse = {
+      expression: '2+2+2*3',
+      result: '10',
+      _id: '63ecf3c0ca3cb4911dc5f013',
+    };
+    it('should get response from cache and not to call calculatorService', async () => {
+      cache.checkInCache.mockResolvedValueOnce(undefined);
+      cache.setToCache.mockResolvedValueOnce(dbResponse);
+
+      expect(service.getResult).not.toHaveBeenCalled();
     });
-    test('then it should call calculatorService', () => {
-      expect(calculatorService.getResult).toBeCalledWith(
-        calculatorStub().request.expression,
-      );
+    it('should get no response from the cache and perform a full caclulation', async () => {
+      cache.checkInCache.mockResolvedValueOnce(undefined);
+      service.getResult.mockReturnValue('10');
+      history.create.mockResolvedValueOnce(dbResponse);
+      cache.setToCache.mockResolvedValueOnce(dbResponse);
+      await expect(
+        controller.getResult({ expression: '2+2+2*3' }),
+      ).resolves.toEqual(dbResponse);
     });
   });
 });

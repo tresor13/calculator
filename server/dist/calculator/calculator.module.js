@@ -8,25 +8,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CalculatorModule = void 0;
 const common_1 = require("@nestjs/common");
-const cache_service_1 = require("../cache/cache.service");
-const history_module_1 = require("../history/history.module");
-const history_service_1 = require("../history/history.service");
+const history_1 = require("../history");
 const calculator_controller_1 = require("./calculator.controller");
-const calculator_service_1 = require("./calculator.service");
-const expression_counter_service_1 = require("./expression.counter.service");
-const regex_creator_service_1 = require("./regex.creator.service");
+const cache_module_1 = require("../cache/cache.module");
+const history_2 = require("../history");
+const db_1 = require("../db");
+const services_1 = require("./services");
+const services_2 = require("../cache/services");
+const services_3 = require("../history/services");
 let CalculatorModule = class CalculatorModule {
 };
 CalculatorModule = __decorate([
     (0, common_1.Module)({
-        imports: [history_module_1.HistoryModule],
+        imports: [history_1.HistoryModule, cache_module_1.CustomCacheModule],
         controllers: [calculator_controller_1.CalculatorController],
         providers: [
-            calculator_service_1.CalculatorService,
-            expression_counter_service_1.ExpressionCounterService,
-            regex_creator_service_1.RegExCreatorService,
-            cache_service_1.CacheService,
-            history_service_1.HistoryService,
+            services_1.CalculatorServiceProvider,
+            services_1.RegExCreatorServiceProvider,
+            services_1.ExpressionCounterServiceProvider,
+            services_2.CacherServiceProvider,
+            services_3.HistoryServiceProvider,
+            ...history_2.historyProviders,
+            ...db_1.databaseProviders,
         ],
     })
 ], CalculatorModule);

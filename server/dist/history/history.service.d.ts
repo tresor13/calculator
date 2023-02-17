@@ -1,10 +1,12 @@
 import { Model, ObjectId } from 'mongoose';
+import { ClientResponseDto } from 'src/calculator/dto/client.response.dto.ts';
 import { CreateHistoryItemDto } from './dto/create-historyitem.dto';
-import { HistoryItem, HistoryItemDocument } from './schemas/historyItem.schema';
-export declare class HistoryService {
+import { HistoryServiceInterface } from './interfaces/interface';
+import { HistoryItem } from './interfaces/interface';
+export declare class HistoryService implements HistoryServiceInterface {
     private historyModel;
-    constructor(historyModel: Model<HistoryItemDocument>);
-    create(dto: CreateHistoryItemDto): Promise<HistoryItem>;
+    constructor(historyModel: Model<HistoryItem>);
+    create(dto: CreateHistoryItemDto): Promise<ClientResponseDto>;
     getAll(): Promise<HistoryItem[]>;
     getOne(id: ObjectId): Promise<HistoryItem>;
     delete(id: ObjectId): Promise<ObjectId>;

@@ -1,1 +1,1 @@
-export type { HistoryItem } from "./types";
+export type { StateItem } from "./types";

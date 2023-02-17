@@ -15,9 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HistoryService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("mongoose");
-const mongoose_2 = require("@nestjs/mongoose");
-const historyItem_schema_1 = require("./schemas/historyItem.schema");
-const maxNumberOfDBItemsToDisplay = 10;
+const constants_1 = require("./interfaces/constants");
 let HistoryService = class HistoryService {
     constructor(historyModel) {
         this.historyModel = historyModel;
@@ -41,7 +39,7 @@ let HistoryService = class HistoryService {
 };
 HistoryService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_2.InjectModel)(historyItem_schema_1.HistoryItem.name)),
+    __param(0, (0, common_1.Inject)(constants_1.HISTORY_MODEL)),
     __metadata("design:paramtypes", [mongoose_1.Model])
 ], HistoryService);
 exports.HistoryService = HistoryService;

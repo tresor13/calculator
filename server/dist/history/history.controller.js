@@ -14,8 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HistoryController = void 0;
 const common_1 = require("@nestjs/common");
-const create_historyitem_dto_1 = require("./dto/create-historyitem.dto");
-const history_service_1 = require("./history.service");
+const create_historyitem_dto_1 = require("./dto/create.historyitem.dto");
+const constants_1 = require("./constants");
 let HistoryController = class HistoryController {
     constructor(historyService) {
         this.historyService = historyService;
@@ -62,7 +62,8 @@ __decorate([
 ], HistoryController.prototype, "delete", null);
 HistoryController = __decorate([
     (0, common_1.Controller)('/history'),
-    __metadata("design:paramtypes", [history_service_1.HistoryService])
+    __param(0, (0, common_1.Inject)(constants_1.HISTORY_SERVICE)),
+    __metadata("design:paramtypes", [Object])
 ], HistoryController);
 exports.HistoryController = HistoryController;
 //# sourceMappingURL=history.controller.js.map

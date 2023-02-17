@@ -1,16 +1,16 @@
 import { OperatorRegExp } from '../configs/types';
 
-export interface CalculatorServiceInterface {
+export interface ICalculatorService {
   getResult(expression: string): string;
   exponentialToDecimal(exponential: string): string;
 }
 
-export interface ExpressionCounterServiceInterface {
+export interface IExpressionCounterService {
   countExpression(inputString: string, operator: OperatorRegExp): string;
   parseExprForMathEntities(expr: string, regexp: RegExp): string[];
 }
 
-export interface RegExCreatorServiceInterface {
+export interface IRegExCreatorService {
   createExpressionRegExps(): {
     expressionWithBracketsRegEx: RegExp;
     noBracketsExpressionRegEx: RegExp;

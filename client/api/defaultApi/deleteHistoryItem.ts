@@ -1,5 +1,6 @@
+import { api } from "..";
 import { client } from "../client";
-import { DeleteRequest } from "../types";
 
-export const deleteHistoryItem: DeleteRequest = (payload: string) =>
-  client.DELETE(`/history/${payload}`);
+export const deleteHistoryItem: typeof api.deleteHistoryItem = (
+  payload: string
+) => client.DELETE(`/history/${payload}`);

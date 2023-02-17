@@ -1,10 +1,12 @@
 import { ExpressionDto } from './dto/expression.dto';
-import { CalculationResultDto } from './dto/calculation-result.dto';
-import { CacheService } from 'src/cache/cache.service';
-import { HistoryService } from 'src/history/history.service';
+import { ClientResponseDto } from './dto/client.response.dto.ts';
+import { ICalculatorService } from './interfaces/calculator.services.interfaces';
+import { ICacheService } from 'src/cache/interface';
+import { IHistoryService } from 'src/history/interfaces/interface';
 export declare class CalculatorController {
     private historyService;
-    private cacheService;
-    constructor(historyService: HistoryService, cacheService: CacheService);
-    getResult(expressionDto: ExpressionDto): Promise<CalculationResultDto>;
+    private readonly cacheService;
+    private readonly calculatorService;
+    constructor(historyService: IHistoryService, cacheService: ICacheService, calculatorService: ICalculatorService);
+    getResult(expressionDto: ExpressionDto): Promise<ClientResponseDto>;
 }

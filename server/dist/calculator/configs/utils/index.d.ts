@@ -1,1 +1,0 @@
-export { makeOperatorsRegEx } from './makeOperatorsRegEx';

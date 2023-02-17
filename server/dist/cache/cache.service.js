@@ -14,26 +14,24 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CacheService = void 0;
 const common_1 = require("@nestjs/common");
-const calculator_service_1 = require("../calculator/calculator.service");
 let CacheService = class CacheService {
-    constructor(cacheManager, calculatorService) {
+    constructor(cacheManager) {
         this.cacheManager = cacheManager;
-        this.calculatorService = calculatorService;
     }
     async checkInCache(expression) {
         const value = await this.cacheManager.get(expression);
-        if (!value) {
-            const result = this.calculatorService.getResult(expression);
-            await this.cacheManager.set(expression, result, 0);
-            return result;
-        }
         return value;
+    }
+    async setToCache(cacheData) {
+        const { expression, result } = cacheData;
+        await this.cacheManager.set(expression, result, 0);
+        return cacheData;
     }
 };
 CacheService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('CACHE_MANAGER')),
-    __metadata("design:paramtypes", [Object, calculator_service_1.CalculatorService])
+    __param(0, (0, common_1.Inject)(common_1.CACHE_MANAGER)),
+    __metadata("design:paramtypes", [Object])
 ], CacheService);
 exports.CacheService = CacheService;
 //# sourceMappingURL=cache.service.js.map

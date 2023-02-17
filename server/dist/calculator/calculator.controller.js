@@ -15,21 +15,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CalculatorController = void 0;
 const common_1 = require("@nestjs/common");
 const expression_dto_1 = require("./dto/expression.dto");
-const cache_service_1 = require("../cache/cache.service");
-const history_service_1 = require("../history/history.service");
+const cache_1 = require("../cache");
+const history_1 = require("../history");
+const constants_1 = require("./constants");
 let CalculatorController = class CalculatorController {
-    constructor(historyService, cacheService) {
+    constructor(historyService, cacheService, calculatorService) {
         this.historyService = historyService;
         this.cacheService = cacheService;
+        this.calculatorService = calculatorService;
     }
     getResult(expressionDto) {
-        const { expression } = expressionDto;
+        const expression = expressionDto.expression;
         const response = this.cacheService
             .checkInCache(expression)
-            .then((result) => {
-            const dto = { result: `${result}`, expression };
-            const historyItem = this.historyService.create(dto);
-            return historyItem;
+            .then((response) => {
+            if (!response) {
+                const calculationResult = this.calculatorService.getResult(expression);
+                const clientDto = this.historyService
+                    .create({
+                    expression,
+                    result: calculationResult,
+                })
+                    .then((dbResponse) => {
+                    return this.cacheService.setToCache(dbResponse);
+                });
+                return clientDto;
+            }
+            return this.historyService.create({ expression, result: response });
         });
         return response;
     }
@@ -43,8 +55,10 @@ __decorate([
 ], CalculatorController.prototype, "getResult", null);
 CalculatorController = __decorate([
     (0, common_1.Controller)('/calculator'),
-    __metadata("design:paramtypes", [history_service_1.HistoryService,
-        cache_service_1.CacheService])
+    __param(0, (0, common_1.Inject)(history_1.HISTORY_SERVICE)),
+    __param(1, (0, common_1.Inject)(cache_1.CACHE_SERVICE)),
+    __param(2, (0, common_1.Inject)(constants_1.CALCULATOR_SERVICE)),
+    __metadata("design:paramtypes", [Object, Object, Object])
 ], CalculatorController);
 exports.CalculatorController = CalculatorController;
 //# sourceMappingURL=calculator.controller.js.map

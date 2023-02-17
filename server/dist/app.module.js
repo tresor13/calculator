@@ -8,10 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const history_module_1 = require("./history/history.module");
-const calculator_module_1 = require("./calculator/calculator.module");
 const config_1 = require("@nestjs/config");
-const db_module_1 = require("./db/db.module");
+const history_1 = require("./history");
+const calculator_1 = require("./calculator");
+const db_1 = require("./db");
+const cache_module_1 = require("./cache/cache.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -20,12 +21,10 @@ AppModule = __decorate([
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
             }),
-            common_1.CacheModule.register({
-                isGlobal: true,
-            }),
-            db_module_1.DBModule.forRoot(),
-            history_module_1.HistoryModule,
-            calculator_module_1.CalculatorModule,
+            cache_module_1.CustomCacheModule.forRoot(),
+            db_1.DBModule,
+            history_1.HistoryModule,
+            calculator_1.CalculatorModule,
         ],
     })
 ], AppModule);

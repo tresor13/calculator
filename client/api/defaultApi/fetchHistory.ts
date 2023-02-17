@@ -1,5 +1,5 @@
+import { api } from "..";
 import { client } from "../client";
-import { GetAllRequest, HistoryItem } from "../types";
 
-export const fetchHistory: GetAllRequest<HistoryItem> = () =>
+export const fetchHistory: typeof api.fetchHistory = () =>
   client.GET("/history");

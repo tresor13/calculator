@@ -1,0 +1,2 @@
+export const HISTORY_SERVICE = 'HISTORY_SERVICE';
+export const HISTORY_MODEL = 'HISTORY_MODEL';

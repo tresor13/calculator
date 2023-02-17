@@ -1,16 +1,26 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ObjectId } from 'mongoose';
-import { CreateHistoryItemDto } from './dto/create-historyitem.dto';
-import { HistoryService } from './history.service';
+import { CreateHistoryItemDto } from './dto/create.historyitem.dto';
+import { HISTORY_SERVICE } from './constants';
+import { IHistoryService } from './interfaces/interface';
 
 @Controller('/history')
 export class HistoryController {
-  constructor(private historyService: HistoryService) {}
+  constructor(
+    @Inject(HISTORY_SERVICE)
+    private historyService: IHistoryService,
+  ) {}
 
   @Post()
   create(@Body() dto: CreateHistoryItemDto) {
-    // const result = getResult(dto.expression);
-    // const postDto = { expression: dto.expression, result };
     return this.historyService.create(dto);
   }
 

@@ -1,31 +1,29 @@
 import { Module } from '@nestjs/common';
-import { CacheService } from '../cache';
-import { CACHE_SERVICE } from '../cache';
 import { HistoryModule } from '../history';
-import { HistoryService } from '../history';
 import { CalculatorController } from './calculator.controller';
-import { CalculatorService } from './calculator.service';
+import { CustomCacheModule } from '../cache/cache.module';
+import { historyProviders } from '../history';
+import { databaseProviders } from '../db';
+
 import {
-  CALCULATOR_SERVICE,
-  EXPRESSION_COUNTER_SERVICE,
-  REGEXP_CREATOR_SERVICE_INTERFACE,
-} from './interfaces/constants';
-import { ExpressionCounterService } from './expression.counter.service';
-import { RegExCreatorService } from './regex.creator.service';
-import { HISTORY_SERVICE } from '../history';
+  CalculatorServiceProvider,
+  RegExCreatorServiceProvider,
+  ExpressionCounterServiceProvider,
+} from './services';
+import { CacherServiceProvider } from 'src/cache/services';
+import { HistoryServiceProvider } from 'src/history/services';
 
 @Module({
-  imports: [HistoryModule],
+  imports: [HistoryModule, CustomCacheModule],
   controllers: [CalculatorController],
   providers: [
-    { useClass: CalculatorService, provide: CALCULATOR_SERVICE },
-    { useClass: ExpressionCounterService, provide: EXPRESSION_COUNTER_SERVICE },
-    {
-      useClass: RegExCreatorService,
-      provide: REGEXP_CREATOR_SERVICE_INTERFACE,
-    },
-    { useClass: CacheService, provide: CACHE_SERVICE },
-    { useClass: HistoryService, provide: HISTORY_SERVICE },
+    CalculatorServiceProvider,
+    RegExCreatorServiceProvider,
+    ExpressionCounterServiceProvider,
+    CacherServiceProvider,
+    HistoryServiceProvider,
+    ...historyProviders,
+    ...databaseProviders,
   ],
 })
 export class CalculatorModule {}

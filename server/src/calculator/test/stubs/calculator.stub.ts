@@ -1,9 +1,9 @@
-import { CalculationResultDto } from 'src/calculator/dto/calculation-result.dto';
+import { ClientResponseDto } from 'src/calculator/dto/client.response.dto.ts';
 import { ExpressionDto } from 'src/calculator/dto/expression.dto';
 
 interface CalculatorStub {
   request: ExpressionDto;
-  respond: CalculationResultDto;
+  respond: ClientResponseDto;
 }
 
 export const calculatorStub = (): CalculatorStub => {

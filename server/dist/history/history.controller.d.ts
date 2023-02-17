@@ -23,13 +23,13 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { ObjectId } from 'mongoose';
-import { CreateHistoryItemDto } from './dto/create-historyitem.dto';
-import { HistoryService } from './history.service';
+import { CreateHistoryItemDto } from './dto/create.historyitem.dto';
+import { IHistoryService } from './interfaces/interface';
 export declare class HistoryController {
     private historyService;
-    constructor(historyService: HistoryService);
-    create(dto: CreateHistoryItemDto): Promise<import("./schemas/historyItem.schema").HistoryItem>;
-    getAll(): Promise<import("./schemas/historyItem.schema").HistoryItem[]>;
-    getOne(id: ObjectId): Promise<import("./schemas/historyItem.schema").HistoryItem>;
+    constructor(historyService: IHistoryService);
+    create(dto: CreateHistoryItemDto): Promise<import("../calculator/dto/client.response.dto.ts").ClientResponseDto>;
+    getAll(): Promise<import("./interfaces/interface").HistoryItem[]>;
+    getOne(id: ObjectId): Promise<import("./interfaces/interface").HistoryItem>;
     delete(id: ObjectId): Promise<import("mongoose").Schema.Types.ObjectId>;
 }

@@ -1,14 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
 
-export type HistoryItemDocument = HistoryItem & Document;
-
-@Schema()
-export class HistoryItem {
-  @Prop()
-  expression: string;
-
-  @Prop()
-  result: string;
-}
-
-export const HistoryItemSchema = SchemaFactory.createForClass(HistoryItem);
+export const HistoryItem = new mongoose.Schema({
+  expression: String,
+  result: String,
+});
