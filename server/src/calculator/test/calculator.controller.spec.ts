@@ -3,13 +3,13 @@ import { HISTORY_SERVICE } from '../../history';
 import { CacheService, CACHE_SERVICE } from '../../cache';
 import { DefaultHistoryService } from '../../history/services/history.service';
 import { CalculatorController } from '../calculator.controller';
-import { CalculatorService } from '../services/calculator.service';
 
 import { CALCULATOR_SERVICE } from '../constants';
+import { ICalculatorService } from '../interfaces/calculator.services.interfaces';
 
 describe('CaclulatorController', () => {
   let controller: CalculatorController;
-  let service: Pick<jest.MockedObject<CalculatorService>, 'getResult'>;
+  let service: Pick<jest.MockedObject<ICalculatorService>, 'getResult'>;
   let cache: Pick<
     jest.MockedObject<CacheService>,
     'checkInCache' | 'setToCache'
